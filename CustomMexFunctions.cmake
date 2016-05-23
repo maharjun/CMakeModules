@@ -1,4 +1,4 @@
-include(BasicFuncs.cmake)
+include(BasicFuncs)
 
 function(get_mex_libs libs_var_name libdir_var_name)
     if(Matlab_FOUND)
@@ -55,10 +55,10 @@ function(custom_add_mex_exec exec_name)
     add_executable(${exec_name} ${custom_add_mex_exec_UNPARSED_ARGUMENTS})
     
     # include directories
-    target_include_directories(${exec_name} ${Matlab_INCLUDE_DIRS})
+    target_include_directories(${exec_name} PRIVATE ${Matlab_INCLUDE_DIRS})
     
     # link libraries
-    get_mex_libs(Matlab_LINK_LIBS, Matlab_LIB_DIR)
+    get_mex_libs(Matlab_LINK_LIBS Matlab_LIB_DIR)
     target_link_libraries(${exec_name} 
         PRIVATE
         ${Matlab_LINK_LIBS}

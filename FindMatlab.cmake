@@ -925,10 +925,10 @@ function(matlab_add_mex )
   target_include_directories(${${prefix}_NAME} PRIVATE ${Matlab_INCLUDE_DIRS})
 
   if(DEFINED Matlab_MX_LIBRARY)
-    target_link_libraries(${${prefix}_NAME} ${Matlab_MX_LIBRARY})
+    target_link_libraries(${${prefix}_NAME} PRIVATE ${Matlab_MX_LIBRARY})
   endif()
 
-  target_link_libraries(${${prefix}_NAME} ${Matlab_MEX_LIBRARY} ${${prefix}_LINK_TO})
+  target_link_libraries(${${prefix}_NAME} PRIVATE ${Matlab_MEX_LIBRARY} ${${prefix}_LINK_TO})
   set_target_properties(${${prefix}_NAME}
       PROPERTIES
         PREFIX ""
