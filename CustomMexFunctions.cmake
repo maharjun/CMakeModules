@@ -1,4 +1,4 @@
-include(BasicFunctions.cmake)
+include(BasicFuncs.cmake)
 
 function(get_mex_libs libs_var_name libdir_var_name)
     if(Matlab_FOUND)
