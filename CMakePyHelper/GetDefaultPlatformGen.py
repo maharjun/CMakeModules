@@ -19,12 +19,13 @@ def getDefaultPlatformGen():
 
     GeneratorListRe = re.compile(r"^.*?Generators\n(.*)$", re.DOTALL)
     NonGeneratorLinesRe = re.compile(r"^  \s+?.*(\n|\Z)", re.MULTILINE)
-    GenratorNamePortion = re.compile(r"^  (\S[^=]*?)(= .*)?$", re.MULTILINE)
+    GeneratorNamePortion = re.compile(r"^  (\S[^=]*?)(= .*)?$", re.MULTILINE)
     GeneratorListStr = re.sub(GeneratorListRe, r"\1", RawCMakeOutput)
     GeneratorListStr = re.sub(NonGeneratorLinesRe, r"", GeneratorListStr)
-    GeneratorListStr = re.sub(GenratorNamePortion, r"\1", GeneratorListStr)
+    GeneratorListStr = re.sub(GeneratorNamePortion, r"\1", GeneratorListStr)
     GeneratorListStr = str.splitlines(GeneratorListStr)
-
+    GeneratorListStr = [s.strip() for s in GeneratorListStr]
+    
     if platform.system() == "Windows":
         FilteredGenListStr = [Str for Str in GeneratorListStr if re.match(r"Visual Studio (11|12|14) [0-9]+ \[arch\]", Str)]
         print("\n".join(FilteredGenListStr))
@@ -39,8 +40,8 @@ def getDefaultPlatformGen():
                 r"\1Win64",
                 FinalGenerator)
     elif platform.system() == "Linux":
-        FinalGenerator = '{GenName}'.format(GenName=FilteredGenListStr[0])
+        FinalGenerator = '{GenName}'.format(GenName=GeneratorListStr[0])
     else:
-        FinalGenerator = '{GenName}'.format(GenName=FilteredGenListStr[0])
+        FinalGenerator = '{GenName}'.format(GenName=GeneratorListStr[0])
     
     return FinalGenerator
