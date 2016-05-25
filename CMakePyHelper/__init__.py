@@ -1,0 +1,1 @@
+from CMakePyHelper.GetDefaultPlatformGen import getDefaultPlatformGen
