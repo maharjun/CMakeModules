@@ -11,19 +11,18 @@ function(get_mex_libs libs_var_name libdir_var_name)
             foreach(Matlab_lib ${Matlab_LINK_LIBNAMES})
                 list(APPEND Temp_Matlab_LINK_LIBS lib${Matlab_lib})
             endforeach()
+            set(Matlab_LINK_LIBNAMES ${Temp_Matlab_LINK_LIBS})
         endif()
-        set(Matlab_LINK_LIBS ${Temp_Matlab_LINK_LIBS})
 
         # for each of the libraries above, find it in the containing library
         # with full path
-        foreach(Matlab_lib ${Temp_Matlab_LINK_LIBS})
+        foreach(Matlab_lib ${Matlab_LINK_LIBNAMES})
             find_library(Temp_LIB_FULL_PATH
                 NAMES ${Matlab_lib}
                 PATHS ${Matlab_LIB_DIR})
             list(APPEND Matlab_LINK_LIBS_FULL ${Temp_LIB_FULL_PATH})
             unset(Temp_LIB_FULL_PATH CACHE)
         endforeach()
-        message(STATUS "Matlab_LINK_LIBS = ${Matlab_LINK_LIBS_FULL}")
     endif()
     # return the libs and the lib dir
     set(${libs_var_name} ${Matlab_LINK_LIBS_FULL} PARENT_SCOPE)
