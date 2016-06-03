@@ -1,1 +1,3 @@
 from CMakePyHelper.GetDefaultPlatformGen import getDefaultPlatformGen
+from CMakePyHelper.CMakeCallFunctions import CMakeGenCall
+from CMakePyHelper.CMakeCallFunctions import CMakeBuildCall
