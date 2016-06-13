@@ -14,10 +14,18 @@ function(GET_EXT_FILES VARIABLE DIRECTORY)
 
 endfunction()
 
-function(GET_CXX_FILES VARIABLE DIRECTORY)
+function(GET_CXX_FILES VARIABLE)
+
 	set(CXX_EXTENSIONS "cpp;c;h;hpp;inl")
 
-    GET_EXT_FILES(CPP_FILES ${DIRECTORY} ${CXX_EXTENSIONS})
+    cmake_parse_arguments(get_cxx_files "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    foreach(_dir ${get_cxx_files_UNPARSED_ARGUMENTS})
+    	GET_EXT_FILES(CPP_FILES_temp ${_dir} ${CXX_EXTENSIONS})
+    	list(APPEND CPP_FILES ${CPP_FILES_temp})
+    endforeach()
+    list(REMOVE_DUPLICATES CPP_FILES)
+    
     set(${VARIABLE} ${CPP_FILES} PARENT_SCOPE)
     message(STATUS "Files Found = ${CPP_FILES}")
 endfunction()
