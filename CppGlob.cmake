@@ -9,8 +9,6 @@ function(GET_EXT_FILES VARIABLE DIRECTORY)
       endforeach()
    endif()
    set(${VARIABLE} ${EXT_FILES} PARENT_SCOPE)
-   message(STATUS "Extensions requested = ${ARGN}")
-   message(STATUS "Directory requested = ${DIRECTORY}")
 
 endfunction()
 
@@ -27,5 +25,4 @@ function(GET_CXX_FILES VARIABLE)
    list(REMOVE_DUPLICATES CPP_FILES)
    
    set(${VARIABLE} ${CPP_FILES} PARENT_SCOPE)
-   message(STATUS "Files Found = ${CPP_FILES}")
 endfunction()
