@@ -13,7 +13,7 @@ function(set_target_compile_link_flags target_name)
         set(LTO_COMPILE_SWITCH "-GL")
         set(LTO_LINK_SWITCH "-LTCG")
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        set(LTO_COMPILE_SWITCH "-flto") # These variables are unset because I have not optimized for gcc yet
+        set(LTO_COMPILE_SWITCH "-flto")
         set(LTO_LINK_SWITCH "-flto")
     endif()
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
