@@ -12,7 +12,11 @@ function(set_target_compile_link_flags target_name)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         set(LTO_COMPILE_SWITCH "-GL")
         set(LTO_LINK_SWITCH "-LTCG")
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    elseif(
+        CMAKE_CXX_COMPILER_ID STREQUAL "GNU" 
+        OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" 
+        OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+
         set(LTO_COMPILE_SWITCH "-flto")
         set(LTO_LINK_SWITCH "-flto")
 
@@ -23,7 +27,12 @@ function(set_target_compile_link_flags target_name)
             set(LTO_LINK_SWITCH "${LTO_LINK_SWITCH} -fuse-ld=gold")
         endif()
     endif()
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    message(STATUS "CMAKE_CXX_COMPILER_ID = ${CMAKE_CXX_COMPILER_ID}")
+    if(
+        CMAKE_CXX_COMPILER_ID STREQUAL "GNU" 
+        OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"
+        OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    
         set(ADDITIONAL_COMPILE_OPTIONS "-std=c++11;-march=native")
     endif()
     target_compile_options(${target_name} 
