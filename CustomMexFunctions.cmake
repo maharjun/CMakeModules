@@ -2,28 +2,24 @@ include(BasicFuncs)
 
 function(get_mex_libs libs_var_name libdir_var_name)
     if(Matlab_FOUND)
-        # extract the containing library from the value of Matlab_MEX_LIBRARY
+        # Extract the containing library from the value of Matlab_MEX_LIBRARY
         get_filename_component(Matlab_LIB_DIR ${Matlab_MEX_LIBRARY} DIRECTORY)
 
-        # edit the library names and add prefix lib- if in windows
-        set(Matlab_LINK_LIBNAMES mat mex mx ut)
-        if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-            foreach(Matlab_lib ${Matlab_LINK_LIBNAMES})
-                list(APPEND Temp_Matlab_LINK_LIBS lib${Matlab_lib})
-            endforeach()
-            set(Matlab_LINK_LIBNAMES ${Temp_Matlab_LINK_LIBS})
-        endif()
+        # Extract the library prefix (includes the path)
+        string(REGEX REPLACE "^(.*[/\\\\][^/\\\\]*)mex.*$" "\\1" MEX_LIBRARY_PREFIX ${Matlab_MEX_LIBRARY})
 
-        # for each of the libraries above, find it in the containing library
-        # with full path
+        # Extract the library postfix
+        string(REGEX REPLACE "^.*[/\\\\][^/\\\\]*mex(.*)$" "\\1" MEX_LIBRARY_POSTFIX ${Matlab_MEX_LIBRARY})
+
+        # Add the above post and pre fix to all the relevant libraries to get the full path
+        # note that all this is because the ut library is not provided by FindMatlab
+        set(Matlab_LINK_LIBNAMES mat mex mx ut)
         foreach(Matlab_lib ${Matlab_LINK_LIBNAMES})
-            find_library(Temp_LIB_FULL_PATH
-                NAMES ${Matlab_lib}
-                PATHS ${Matlab_LIB_DIR})
-            list(APPEND Matlab_LINK_LIBS_FULL ${Temp_LIB_FULL_PATH})
-            unset(Temp_LIB_FULL_PATH CACHE)
+            list(APPEND Temp_Matlab_LINK_LIBS ${MEX_LIBRARY_PREFIX}${Matlab_lib}${MEX_LIBRARY_POSTFIX})
         endforeach()
+        set(Matlab_LINK_LIBS_FULL ${Temp_Matlab_LINK_LIBS})
     endif()
+
     # return the libs and the lib dir
     set(${libs_var_name} ${Matlab_LINK_LIBS_FULL} PARENT_SCOPE)
     set(${libdir_var_name} ${Matlab_LIB_DIR} PARENT_SCOPE)
